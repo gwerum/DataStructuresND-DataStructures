@@ -1,5 +1,7 @@
 import sys
 import numpy as np
+import unittest
+import json
 
 class HuffmanTree():
     """docstring for HuffmanTree"""
@@ -39,32 +41,43 @@ class HuffmanTree():
 
 class HuffmanCoder():
     def __init__(self):
+        self.input_data = None
         self.input_string = ''
         self.char_distribution = {}
         self.huffman_tree = None
         self.encoded_data = ''
         self.decoded_data = ''
+        self.output_data = None
 
     def huffman_encodes(self, data):
         self.__clearCoder()
-        self.__loadInputString(data)
+        self.__convertInputToString(data)
         self.__computeProbabilityDistributionOfChars()
         self.__computeHuffmanTree()
         self.__encodeInputString()
         return self.encoded_data, self.huffman_tree
 
     def huffman_decodes(self, data, tree):
-        self.__clearCoder()
         self.__loadDataAndHuffmanTree(data, tree)
         self.__decodeData()
-        return self.decoded_data
+        self.__convertToInputFormat()
+        return self.output_data
+
+    def __convertToInputFormat(self):
+        if not type(self.input_data) == str:
+            self.output_data = json.loads(self.decoded_data)
+        else:
+            self.output_data = self.decoded_data
 
     def __clearCoder(self):
         self.__init__()
 
-    def __loadInputString(self, data):
-        assert(type(data) == str)
-        self.input_string = data
+    def __convertInputToString(self, data):
+        self.input_data = data
+        if not type(data) == str:
+            self.input_string = json.dumps(data)
+        else:
+            self.input_string = data
 
     def __computeProbabilityDistributionOfChars(self):
         number_of_chars = len(self.input_string)
@@ -108,24 +121,60 @@ class HuffmanCoder():
             else:
                 return self.__extractHuffmanCodeFrom(binary_code[:-1])
 
-if __name__ == "__main__":
-    coder = HuffmanCoder()
 
-    a_great_sentence = "The bird is the word"
+class TestHuffmanCoder(unittest.TestCase):
+    """docstring for TestHuffmanCoder"""
+    def setUp(self):
+        self.coder = HuffmanCoder()
 
-    a_great_sentence = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet,"
+    def test_default_sentence(self):
+        print(" ########## Test 1: Encode/Decode default sentence ########## \n")
+        data = "The bird is the word"
+        self.run_test(data)
 
-    print ("The size of the data is: {}\n".format(sys.getsizeof(a_great_sentence)))
-    print ("The content of the data is: {}\n".format(a_great_sentence))
+    def test_lorem_ipsum(self):
+        print(" ########## Test 2: Encode/Decode Lorem ipsum (200 words) ########## \n")
+        data = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet,"
+        self.run_test(data)
 
-    encoded_data, tree = coder.huffman_encodes(a_great_sentence)
+    def test_random_numbers(self):
+        print(" ########## Test 3: Encode/Decode random number array ########## \n")
+        random_numbers =   [175461,  523927,  590337,  270634,  947437,\
+                            631992,  55746,   59199,   604444,  616455,\
+                            930774,  871554,  841838,  424743,  101906,\
+                            783667,  484640,  358658,  976815,  841232,\
+                            354362,  473701,  530196,  604016,  238687,\
+                            68740,   588073,  491440,  166244,  822958,\
+                            633917,  779523,  716105,  387188,  978551,\
+                            98800,   530604,  74989,   39958,   389131,\
+                            718362,  231471,  133154,  635269,  469259,\
+                            216343,  893010,  67450,   2195,    181795,\
+                            6631,    699167,  406165,  328180,  456936]
+        self.run_test(random_numbers)
 
-    print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
-    print ("The content of the encoded data is: {}\n".format(encoded_data))
+    def test_string_array(self):
+        print(" ########## Test 4: Encode/Decode string array ########## \n")
+        string_array = ['Apples','Bananas','Cherries','Peaches']
+        self.run_test(string_array)
 
-    decoded_data = coder.huffman_decodes(encoded_data, tree)
+    def test_dictionary(self):
+        print(" ########## Test 5: Encode/Decode dictionary ########## \n")
+        dictionary = {'Apples': 5,'Bananas': 19,'Cherries': 89,'Peaches': 8}
+        self.run_test(dictionary)
 
-    print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
-    print ("The content of the encoded data is: {}\n".format(decoded_data))
+    def test_None(self):
+        print(" ########## Test 6: Encode/Decode Null input ########## \n")
+        null_input = None
+        self.run_test(null_input)
 
-    assert(a_great_sentence == decoded_data)
+    def run_test(self, input_data):
+        print ("The size of the data is: {}\n".format(sys.getsizeof(input_data)))
+        print ("The content of the data is: {}\n".format(input_data))
+        encoded_data, tree = self.coder.huffman_encodes(input_data)
+        print ("The size of the encoded data is: {}\n".format(sys.getsizeof(int(encoded_data, base=2))))
+        print ("The content of the encoded data is: {}\n".format(encoded_data))
+        decoded_data = self.coder.huffman_decodes(encoded_data, tree)
+        print ("The size of the decoded data is: {}\n".format(sys.getsizeof(decoded_data)))
+        print ("The content of the encoded data is: {}\n".format(decoded_data))
+        self.assertEqual(decoded_data, input_data)
+

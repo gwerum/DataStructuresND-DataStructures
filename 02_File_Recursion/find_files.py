@@ -50,31 +50,46 @@ def find_files(suffix, path):
 class TestFileFinder(unittest.TestCase):
   """docstring for TestFileFinder"""
   def test_find_c_files(self):
+    print(" ########## Test 1: Find files with .c-suffix ########## ")
     expected_file_paths = ['./testdir/subdir1/a.c', './testdir/subdir3/subsubdir1/b.c', \
                           './testdir/subdir5/a.c', './testdir/t1.c']
     found_file_paths = find_files('.c', './testdir/')              
-    self.assertEqual(sorted(expected_file_paths), sorted(found_file_paths))
+    self.assertEqual(sorted(found_file_paths), sorted(expected_file_paths))
+    print("Expected output:\n {}".format(sorted(expected_file_paths)))
+    print("Received output:\n {}".format(sorted(found_file_paths))+'\n')
 
   def test_find_non_existing_files(self):
+    print(" ########## Test 2: Find non-existing files with .cpp-suffix ########## ")
     found_file_paths = find_files('.cpp', './testdir/')
     self.assertEqual(found_file_paths, [])
+    print("Expected output:\n {}".format([]))
+    print("Received output:\n {}".format(found_file_paths)+'\n')
 
   def test_non_existing_folder(self):
+    print(" ########## Test 3: Search non-existing folder './testdir2/' ########## ")
     found_file_paths = find_files('.c', './testdir2/')
     self.assertEqual(found_file_paths, [])
+    print("Expected output:\n {}".format([]))
+    print("Received output:\n {}".format(found_file_paths)+'\n')
 
   def test_find_hidden_files(self):
+    print(" ########## Test 4: Find hidden files with .gitkeep extension ########## ")
     expected_file_paths = ['./testdir/subdir2/.gitkeep', './testdir/subdir4/.gitkeep']
     found_file_paths = find_files('.gitkeep', './testdir/')              
-    self.assertEqual(sorted(expected_file_paths), sorted(found_file_paths))
+    self.assertEqual(sorted(found_file_paths), sorted(expected_file_paths))
+    print("Expected output:\n {}".format(expected_file_paths))
+    print("Received output:\n {}".format(found_file_paths)+'\n')
 
   def test_multiple_suffixes(self):
+    print(" ########## Test 5: Find files with multiple suffixes (.c and .h) ########## ")
     expected_file_paths = ['./testdir/subdir1/a.c', './testdir/subdir3/subsubdir1/b.c', \
                           './testdir/subdir5/a.c', './testdir/t1.c', \
                           './testdir/subdir1/a.h', './testdir/subdir3/subsubdir1/b.h', \
                           './testdir/subdir5/a.h', './testdir/t1.h']
     found_file_paths = find_files(('.c', '.h'), './testdir/')              
-    self.assertEqual(sorted(expected_file_paths), sorted(found_file_paths))
+    self.assertEqual(sorted(found_file_paths), sorted(expected_file_paths))
+    print("Expected output:\n {}".format(sorted(expected_file_paths)))
+    print("Received output:\n {}".format(sorted(found_file_paths))+'\n')
 
 
 
