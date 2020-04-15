@@ -57,7 +57,8 @@ Total time complexity for HuffmanCoder(): O(3*N + (C-1) + 1) ~ O(N)
 
 Considering that generally N >> C
 ```
-##### Overall time and space complexity
+
+#### Overall time and space complexity
 Considering time and space complexity from both classes, HuffmanCoder() and HuffmanTree(), the following can be approximated:
 
 ```
