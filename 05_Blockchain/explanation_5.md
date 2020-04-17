@@ -12,9 +12,11 @@ Hash pointers are comprised of two parts:
 So, a hash pointer can not only be used to get the information from the previous block, but also be used to verify that this information hasn't been changed since creation of the block.
 
 ![hash_pointers](https://github.com/gwerum/DataStructuresND-DataStructures/blob/master/05_Blockchain/hash_pointer.jpg "Hash pointers linkage in blockchain")
-Image source: (https://medium.com/@zhaohuabing/hash-pointers-and-data-structures-f85d5fe91659)
+Image source: [Hash pointers and data structures](https://medium.com/@zhaohuabing/hash-pointers-and-data-structures-f85d5fe91659)
 
-Generating the hash of the information not only includes the data stored in the previous block but also the hash pointer of the previous block. This is key to idea of the blockchain. By this it is made sure, that if a single block is changed the whole blockchain following this block will notice. I want go deeper into this, if you're more interested in learning how this works in detail read this enlightning article: [Blockchain explained in 7-steps](https://blog.goodaudience.com/blockchain-for-beginners-what-is-blockchain-519db8c6677a?gi=61da6b19d02)
+Generating the hash of the information not only includes the data stored in the previous block but also the hash pointer of the previous block. This is key to the idea of the blockchain. This guarantees immutability of the whole blockchain since a change in a single block will change its hash and subsequently the hashes of all its succeeding blocks. 
+
+**Note**: Immutability of the blockchain is not guaranteed in the implementation of this repo since no requirements towards the hash structure are stated.
 
 ---
 
