@@ -16,16 +16,23 @@ There is an existing data structure, which satisfies already requirement 1, 4 an
 
 To fulfill all requirements stated above I had to limit the size of the ordered dict to maximum five elements. If the cache size is already five, then the `set(key, value)` method will take care, that the oldest element is removed from the cache. If any cache element is acessed, the `get(key)` method will take care to *enqueue* the element to the *cache tail* after acessing it.
 
+---
 
 ## Runtime efficiency
 
-Python dicts are implented as hashmaps, therefore the worst case time complexity is *O(n)*, however, generally an average time complexity of *O(1)* can be assumed. The space complexity of the cache depends on the value size of the key-value-pairs stored in the cache. If n is the size of the value input, then the space complexity can be approximated with *O(5*n)* ~ *O(n)*.
-```
-Time complexity: ~ O(1)
-Space complexity: O(5*n) ~ O(n) (for n >> number of cache elements)
+Let's consider N the average size of an element stored in the cache, then the space requirements are O(5N). The cache is implemented as dictionary, which are implemented as hashmaps in Python. The worst case access time is *O(n)*, however in average a constant access time, for both read and write, can be assumed, especially in case the dict is small as the cache.
 
-n: average size of the key-value-pair stored in the cache
-```
+The *get(key)* method requires one read and one write access, therefor O(2). The same applies for the *set(key, value)* method, since it needs to be checked if the element already exists in the cache. In case of cache overflow the oldest element needs to be removed, so the worst case for the *set(key, value)* method is O(3). The worst case time complexity of any cache access method is therefore O(3) = max(O(2),O(3)).
+
+|  | Time complexity | Space complexity |
+| ------------------- | --------------- | ---------------- |
+| single call of *get(key)* | O(2) | |
+| single call of *set(key, value)* | O(3) | O(N) |
+| **Total cache** | **O(3)** | **O(5N)** |
+
+**N**: Average size of element stored in cache
+
+---
 
 ## Test Cases
 
