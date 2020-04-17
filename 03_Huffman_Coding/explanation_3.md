@@ -1,4 +1,4 @@
-## HuffmanCoder.py
+## Explanations for HuffmanCoder.py
 
 ### Code explanation & Data Structures
 
@@ -18,15 +18,24 @@ The tree above is an example for a small tree. Generally, high probability chars
 #### class HuffmanCoder()
 This class basically takes care of all the rest: the input/output handling, computation of probability distribution of chars and encoding/decoding using the *HuffmanTree()*. Especially, I had to take care that if the input data is not provided in string format I had to convert first to string format before encoding and converting it back to original format after decoding. For this, I used the json library and its methods *json.dumps()* and *json.loads()*.
 
+---
 
 ### Runtime efficiency
 
 #### class HuffmanTree()
-Computing the Huffman codes requires one recursion for constructing each tree node, which are in worst case one node per char, so number of tree nodes/recursion equals the *total number of different chars C* in the input data.  Additionally, during recursion the temporary tree needs to be sorted to extract the two lowest probability chars. The worst case size of the temporary tree equals again C. Constructing the tree from the codes adds another space and time complexity of order C. So the overall complexities for class HuffmanTree() are:
-```
-Time complexity: O(3*C)
-Space complexity: O(2*C)
-```
+Computing the Huffman tree requires one recursion for constructing each tree node. In worst case one tree node for each unique char of the input string will be created (C: total number of unique chars).
+During tree construction the temporary tree (worst case size C) needs to be sorted to extract the two lowest probability chars during each recursion.
+I decided to generate an additional "decoding tree" to reduce complexity and ease code readability in the decoding method. This adds another order C to space and time complexity.
+
+| class HuffmanTree() | Time complexity | Space complexity |
+| ------------------- | --------------- | ---------------- |
+| Creating tree nodes | O(C) | O(C) |
+| Sort temporary tree | O(C) | |
+| Creating "decoding" tree | O(C) | O(C) |
+| **Total** | **O(3C)** | **O(2C)** |
+
+**C**: total number of unique chars in input string
+
 
 #### class HuffmanCoder()
 ##### Space complexity
@@ -68,7 +77,9 @@ Space complexity: O(N + 2*C) ~ O(N)
 Considering that generally N >> C
 ```
 **N**: total number of chars in input string
-**C**: total number of different chars in input strings
+**C**: total number of unique chars in input string
+
+---
 
 ### Test Cases
 
