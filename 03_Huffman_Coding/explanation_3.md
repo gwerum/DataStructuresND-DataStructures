@@ -1,22 +1,26 @@
 ## Explanations for HuffmanCoder.py
 
+---
+
 ### Code explanation & Data Structures
 
 The implementation consists of two classes, the **class HuffmanCoder()** and the **class HuffmanTree()**. 
 
 #### class HuffmanTree()
-This class takes as input the probability distribution of chars of the input data. In the implementation I focused on computing the Huffman codes from the probability distribution of the chars. Constructing the tree data structure I basically "out-sourced" to the Python dictionary, which is a tree under the hood. For better code clarity I use two dictionaries, one for converting to binaries during encoding and one for converting to chars during decoding.
+This class takes as input the probability distribution of unique chars of the input data. I decided to use a simple Python dictionary for storing the Huffman tree. The tree is constructed in a recursive manner. 
+To make things simple and ease code readibility in the actual encoding and decoding methods, I decided to have "two" trees, one for encoding and the other for decoding. This doesn't effect much runtime since it only adds time and space complexity of order C (the total number of unique chars, which is generally small compared to the total numbers of chars N of the input).
 
-Here an example for input sentence "The bird is the word":
+Here an example of the dictionary tree for the input sentence "The bird is the word":
 ```
-Huffman_codes = {' ': '110', 'e': '010', 'i': '000', 'r': '001', 'd': '1110', 'h': '1111', 'w': '1010', 'T': '1011', 'o': '1000', 't': '1001', 's': '0110', 'b': '0111'}
+Tree_Encoding = {' ': '110', 'e': '010', 'i': '000', 'r': '001', 'd': '1110', 'h': '1111', 'w': '1010', 'T': '1011', 'o': '1000', 't': '1001', 's': '0110', 'b': '0111'}
 
-Huffman_tree = {'110': ' ', '010': 'e', '000': 'i', '001': 'r', '1110': 'd', '1111': 'h', '1010': 'w', '1011': 'T', '1000': 'o', '1001': 't', '0110': 's', '0111': 'b'}
+Tree_Decoding = {'110': ' ', '010': 'e', '000': 'i', '001': 'r', '1110': 'd', '1111': 'h', '1010': 'w', '1011': 'T', '1000': 'o', '1001': 't', '0110': 's', '0111': 'b'}
 ```
-The tree above is an example for a small tree. Generally, high probability chars get assigned less binary digits and small probability chars get assigned more binary digits. For computing the Huffman codes I used a recursive algorithm, which always identifies the two lowest probability chars of the current probability distribution and creates a new tree node for them. Creating a new tree node means in this case, appending a new binary digit to their Huffman code. With this, step-by-step the Huffman codes are computed, which then are used to create a binary Huffman tree.
+The tree above is an example for a small tree. Generally, high probability chars get assigned less binary digits and small probability chars get assigned more binary digits. In the example above: 'e' = 010 has higher probability of occurence then 'o' = 1000.
 
 #### class HuffmanCoder()
-This class basically takes care of all the rest: the input/output handling, computation of probability distribution of chars and encoding/decoding using the *HuffmanTree()*. Especially, I had to take care that if the input data is not provided in string format I had to convert first to string format before encoding and converting it back to original format after decoding. For this, I used the json library and its methods *json.dumps()* and *json.loads()*.
+This class basically takes care of all the rest: the input/output handling, computation of probability distribution of unique chars C and encoding/decoding using the HuffmanTree(). 
+In particular, I had to take care that if the input data is not provided in string format I have to convert it first to string format before encoding and convert it back to original format after decoding. For this, I used the json library and its methods *json.dumps()* and *json.loads()*.
 
 ---
 
@@ -38,46 +42,43 @@ I decided to generate an additional "decoding tree" to reduce complexity and eas
 
 
 #### class HuffmanCoder()
-##### Space complexity
-Starting with the space complexity the following four main data structures are in use:
 
-1. Input data of size N (total number of chars)
-2. Char distribution probability of size C (total number of different chars in N)
-3. Encoded data stored as binary string of appr. size N/2 (empirical received, exact computation of size more complicated)
-4. Decoded data of size N (total number of chars of input data)
-```
-Total space complexity for HuffmanCoder(): O(2,5N + C) ~ O(N)
+The following tasks are performed:
 
-Considering that generally N >> C
-```
+1. Read and store input string of size N (total number of chars)
+2. Compute probability distribution of unique chars C (total number of unique chars in N)
+3. Encoding data:
+* Conversion of each char of input with size N to Huffman Code
+* Huffman code lookup for each char from tree on average in constant time
+* Encoded data stored with approximately size N/2 (empirical received, exact computation of size more complicated)
+4. Decoding data:
+* Back-conversion and storage of each char of input with size N
+* Huffman tree loopup in constant time, however recursion needed to identify code length. Maximum number of recursions equals tree depths, which is worst case C-1, in average less than C/2 can be assumed since higher probability chars less deep in tree.
 
-##### Time complexity
-For calculating the time complexity the following main steps need to be considered:
 
-1. Computation of probability distribution of chars of input with size N
-2. Encoding:
-	a. Conversion of each char of input with size N to Huffman Code
-	b. Huffman code lookup for each char from tree on average in constant time
-3. Decoding:
-	a. Back-conversion of each char of input with size N
-	b. Huffman tree loopup in constant time, however recursion needed to identify code length. Maximum number of recursions equals tree depths, which is worst case C-1.
-```
-Total time complexity for HuffmanCoder(): O(3*N + (C-1) + 1) ~ O(N)
+| class HuffmanCoder() | Time complexity | Space complexity |
+| ------------------- | --------------- | ---------------- |
+| Reading & storing input data | O(N) | O(N) |
+| Computing char distribution | O(C) | |
+| Encoding data | O(N) | O(N/2) |
+| Decoding data | O(N + N*(C/2)) | O(N) |
+| **Total** | **O(3N + N(C/2) + C)** | **O(2.5N)** |
 
-Considering that generally N >> C
-```
-
-#### Overall time and space complexity
-Considering time and space complexity from both classes, HuffmanCoder() and HuffmanTree(), the following can be approximated:
-
-```
-Time complexity: O(N + 3*C) ~ O(N)
-Space complexity: O(N + 2*C) ~ O(N)
-
-Considering that generally N >> C
-```
-**N**: total number of chars in input string
 **C**: total number of unique chars in input string
+**N**: total number of chars in input string
+
+#### Overall complexity
+
+Considering that generally N >> C the following estimation of overall complexity can be made:
+
+|  | Time complexity | Space complexity |
+| ------------------- | --------------- | ---------------- |
+| class HuffmanTree() | O(3C) | O(2C) |
+| class HuffmanCoder() | O(3N + N(C/2) + C) | O(2.5N) |
+| **Total** | **O(3N + N(C/2) + 4C) ~ O(N) ** | **O(2.5N + 2C) ~ O(N)** |
+
+**C**: total number of unique chars in input string
+**N**: total number of chars in input string
 
 ---
 
