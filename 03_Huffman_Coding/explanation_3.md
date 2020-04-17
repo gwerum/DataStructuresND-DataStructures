@@ -29,12 +29,16 @@ Computing the Huffman tree requires one recursion for constructing each tree nod
 During tree construction the temporary tree (worst case size C) needs to be sorted to extract the two lowest probability chars during each recursion.
 I decided to generate an additional "decoding tree" to reduce complexity and ease code readability in the decoding method. This adds another order C to space and time complexity.
 
+<center>
+
 | class HuffmanTree() | Time complexity | Space complexity |
 | ------------------- | --------------- | ---------------- |
 | Creating tree nodes | O(C) | O(C) |
 | Sort temporary tree | O(C) | |
 | Creating "decoding" tree | O(C) | O(C) |
 | **Total** | **O(3C)** | **O(2C)** |
+
+</center>
 
 **C**: total number of unique chars in input string
 
@@ -53,6 +57,7 @@ The following tasks are performed:
 	* Back-conversion and storage of each char of input with size N
 	* Huffman tree loopup in constant time, however recursion needed to identify code length. Maximum number of recursions equals tree depths, which is worst case C-1, in average less than C/2 can be assumed since higher probability chars less deep in tree.
 
+<center>
 
 | class HuffmanCoder() | Time complexity | Space complexity |
 | ------------------- | --------------- | ---------------- |
@@ -62,6 +67,8 @@ The following tasks are performed:
 | Decoding data | O(N + N*(C/2)) | O(N) |
 | **Total** | **O(3N + N(C/2) + C)** | **O(2.5N)** |
 
+</center>
+
 **C**: total number of unique chars in input string
 **N**: total number of chars in input string
 
@@ -69,11 +76,15 @@ The following tasks are performed:
 
 Considering that generally N >> C the following estimation of overall complexity can be made:
 
+<center>
+
 |  | Time complexity | Space complexity |
 | ------------------- | --------------- | ---------------- |
 | class HuffmanTree() | O(3C) | O(2C) |
 | class HuffmanCoder() | O(3N + N(C/2) + C) | O(2.5N) |
 | **Total** | **O(3N + N(C/2) + 4C) ~ O(N)** | **O(2.5N + 2C) ~ O(N)** |
+
+</center>
 
 **C**: total number of unique chars in input string
 **N**: total number of chars in input string
