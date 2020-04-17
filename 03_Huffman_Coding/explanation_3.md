@@ -46,12 +46,12 @@ The following tasks are performed:
 1. Read and store input string of size N (total number of chars)
 2. Compute probability distribution of unique chars C (total number of unique chars in N)
 3. Encoding data:
-...a. Conversion of each char of input with size N to Huffman Code
-...b. Huffman code lookup for each char from tree on average in constant time
-...c. Encoded data stored with approximately size N/2 (empirical received, exact computation of size more complicated)
+	* Conversion of each char of input with size N to Huffman Code
+	* Huffman code lookup for each char from tree on average in constant time
+	* Encoded data stored with approximately size N/2 (empirical received, exact computation of size more complicated)
 4. Decoding data:
-...a. Back-conversion and storage of each char of input with size N
-...b. Huffman tree loopup in constant time, however recursion needed to identify code length. Maximum number of recursions equals tree depths, which is worst case C-1, in average less than C/2 can be assumed since higher probability chars less deep in tree.
+	* Back-conversion and storage of each char of input with size N
+	* Huffman tree loopup in constant time, however recursion needed to identify code length. Maximum number of recursions equals tree depths, which is worst case C-1, in average less than C/2 can be assumed since higher probability chars less deep in tree.
 
 
 | class HuffmanCoder() | Time complexity | Space complexity |
