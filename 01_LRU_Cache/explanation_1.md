@@ -1,6 +1,6 @@
 # LRU_Cache.py
 
-## Code explanation & Data structures
+### Code explanation & Data structures
 
 The tasks of this exercise was to implement a class for a `Last-Recently-Used-Cache (LRU Cache)` of size 5 for storing *key-value-pairs*, including a `get(key)` and `set(key, value)` method. From this task the requirements can be derived:
 
@@ -18,7 +18,7 @@ To fulfill all requirements stated above I had to limit the size of the ordered 
 
 ---
 
-## Runtime efficiency
+### Runtime efficiency
 
 Let's consider N the average size of an element stored in the cache, then the space requirements are O(5N). The cache is implemented as dictionary, which are implemented as hashmaps in Python. The worst case access time is *O(n)*, however in average a constant access time, for both read and write, can be assumed, especially in case the dict is small as the cache.
 
@@ -34,7 +34,7 @@ The *get(key)* method requires one read and one write access, therefor O(2). The
 
 ---
 
-## Test Cases
+### Test Cases
 
 Six test cases have been implemented in `class TestCache()` for the following default and corner use cases:
 

@@ -1,6 +1,7 @@
 import hashlib
 import unittest
 import numpy as np
+import pdb
 
 from datetime import datetime
 
@@ -106,8 +107,15 @@ class TestBlockChain(unittest.TestCase):
 		block_chain_data, validity = block_chain.get_data()
 		self.check_data(input_data, block_chain_data, validity)
 
+	def test_integers(self):
+		print(" ########## Test 3: Create large blockchain with 10.000 blocks ########## \n")
+		input_data = [i for i in range(10000)]
+		block_chain, stored_blocks = self.generate_block_chain_from(input_data)
+		block_chain_data, validity = block_chain.get_data()
+		self.check_data(input_data, block_chain_data, validity)
+
 	def test_alter_blockchain_data(self):
-		print(" ########## Test 3: Alter blockchain data and check if detected ########## \n")
+		print(" ########## Test 4: Alter blockchain data and check if detected ########## \n")
 		input_data = ["Apple","Mango","Peach","Banana","Orange","Grapes","Watermelon","Tomato"]
 		block_chain, stored_blocks = self.generate_block_chain_from(input_data)
 		peach_block = stored_blocks[2]
@@ -116,8 +124,10 @@ class TestBlockChain(unittest.TestCase):
 		self.check_data(input_data, block_chain_data, validity)
 
 	def check_data(self, input_data, block_chain_data, validity):
-		print("Input data: {}".format(input_data))
-		print("Output data: {}".format(block_chain_data)+'\n')
+		print("Input data: {}".format(input_data[:101]))
+		print("Output data: {}".format(block_chain_data[:101])+'\n')
+		if len(input_data) > 100:
+			print("Blockchain length = {}, input/output prints shortened.\n".format(len(input_data)))
 		if np.sum(validity) != len(input_data):
 			for index in np.nonzero(validity)[0]:
 				self.assertEqual(input_data[index], block_chain_data[index])
