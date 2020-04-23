@@ -49,22 +49,22 @@ class LinkedList:
 
 def get_llist_union(llist_1, llist_2):
     # Your Solution Here
-    union = get_llist_intersection(llist_1, llist_2)
-    for value in llist_1:
-        if value not in union:
-            union.append(value)
-    for value in llist_2:
-        if value not in union:
-            union.append(value)
-    return union
+    llist_union = LinkedList()
+    for value_1 in llist_1:
+        if value_1 not in llist_union:
+            llist_union.append(value_1)
+    for value_2 in llist_2:
+        if value_2 not in llist_union:
+            llist_union.append(value_2)
+    return llist_union
 
 def get_llist_intersection(llist_1, llist_2):
     # Your Solution Here
     llist_intersection = LinkedList()
-    for value in llist_1:
-        if value not in llist_intersection:
-            if value in llist_2:
-                llist_intersection.append(value)
+    for value_1 in llist_1:
+        if value_1 not in llist_intersection:
+            if value_1 in llist_2:
+                llist_intersection.append(value_1)
     return llist_intersection
 
 
