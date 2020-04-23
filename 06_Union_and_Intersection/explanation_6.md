@@ -38,7 +38,7 @@ Computing the union doesn't required checking the existance of values_1 in *llis
 | ------------------- | --------------- | ---------------- |
 | Read & add values_1 to union list | O(n) | O(n) |
 | Check for repetition | O(n/2) |  |
-| Read & add values_1 to union list | O(n) | O(n-m) |
+| Read & add values_2 to union list | O(n) | O(n-m) |
 | Check for repetition | O(n + (n-m)/2) |  |
 | **Total** | **O(4n - m/2) ~ O(4n)** | **O(2n - m) ~ O(2n)** |
 
