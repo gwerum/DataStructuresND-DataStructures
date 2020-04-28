@@ -25,7 +25,7 @@ As described above, the **is_member_in_group(*member, group*)** method stops as 
 | ------------------- | --------------- | ---------------- | ---------------- |
 | Worst case | O(n) | O(d) | If all nodes of the tree need to be searched |
 | Best case | O(1) | O(1) | If the member is member of the first group searched |
-| Worst case BST | O(log(n)) | O(log(n)) | If the directory would have been impemented as BST |
+| Worst case BST | O(log(n)) | O(log(n)) | If the directory would have been implemented as BST |
 
 **n**: total number of nodes in directory tree
 **d**: tree depths
